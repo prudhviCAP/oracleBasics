@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<emp_table>
+	<empno>7369</empno>
+	<ename>smith</ename>
+	<job>clerk</job>
+	<mgr>7902</mgr>
+	<hiredate>17-Dec-80</hiredate>
+	<sal>11000</sal>
+	<comm>200</comm>
+	<deptno>20</deptno>
+	
+	<empno>7563</empno>
+	<ename>john</ename>
+	<job>sales manager</job>
+	<mgr>7903</mgr>
+	<hiredate>14-Feb-85</hiredate>
+	<sal>7000</sal>
+	<comm>100</comm>
+	<deptno>10</deptno>
+	
+	<empno>7367</empno>
+	<ename>Emily</ename>
+	<job>manager</job>
+	<mgr>7902</mgr>
+	<hiredate>22-Mar-82</hiredate>
+	<sal>30000</sal>
+	<comm>200</comm>
+	<deptno>20</deptno>
+	
+	<empno>7390</empno>
+	<ename>Brody</ename>
+	<job>Clerk</job>
+	<mgr>7904</mgr>
+	<hiredate>30-Jan-89</hiredate>
+	<sal>11000</sal>
+	<comm>300</comm>
+	<deptno>30</deptno>
+	
+	<empno>7903</empno>
+	<ename>Ram</ename>
+	<job>President</job>
+	<mgr>7904</mgr>
+	<hiredate>21-Sep-96</hiredate>
+	<sal>7000</sal>
+	<comm>100</comm>
+	<deptno>20</deptno>
+	
+	<empno>7902</empno>
+	<ename>Shyam</ename>
+	<job>Analyst</job>
+	<mgr>7903</mgr>
+	<hiredate>12-Oct-83</hiredate>
+	<sal>15000</sal>
+	<comm>250</comm>
+	<deptno>20</deptno>
+	
+	<empno>7904</empno>
+	<ename>Carlson</ename>
+	<job>Vice-President</job>
+	<mgr>7902</mgr>
+	<hiredate>31-Jan-87</hiredate>
+	<sal>45000</sal>
+	<comm>100</comm>
+	<deptno>10</deptno>
+</emp_table>
+
+	
