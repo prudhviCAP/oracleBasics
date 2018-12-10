@@ -1,0 +1,51 @@
+<html>
+ <head> 
+ <title>window example </title>
+ </head>
+ <script>
+	var width=document.getElementById("width");
+	var height=document.getElementById("height");
+	var left=document.getElementById("left");
+	var top=document.getElementById("top");
+	function nwindow()
+	{ 
+		var x=window.open("http://www.google.com/","_blank");
+		//var"width : "+width+" height : "+height+" left : "+left+" top : "+top
+		//x.document.write("width : "+width+" height : "+height+" left : "+left+" top : "+top);
+	}
+			
+</script>
+ 
+ <body >
+	<form id="frmlab">
+	<table border="1" cellspacing="8" cellpadding="10" bordercolor="blue"> 
+	<tr >
+		<th colspan="4">Create a new Window</th>
+	</tr>
+	<tr>
+		<td colspan="4"align="center">Window Size</td>
+	</tr>
+	<tr>
+		<td>width:</td>
+		<td><input id="width"></td>
+		<td>height:</td>
+		<td><input id="height"></td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center">POSITION</td>
+	</tr>
+	<tr>
+		<td>left:</td>
+		<td><input id="left"></td>
+		<td>top:</td>
+		<td><input id="top"></td>
+	</tr>
+	<tr>
+		<td colspan="3"align="center"><button onclick="nwindow()">New Window </button></td>
+		<td align="center"><button onclick="reset()">Reset</button></td>
+	</tr>
+		
+	</table>
+	</form>
+ </body>
+ </html> 

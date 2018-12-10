@@ -1,0 +1,30 @@
+<html>
+ <head>
+	<title>Embedding Script tag in HTML Document</title> 
+ 
+<script> 
+var headVar=50;
+document.write("<hr>Script embedded in head Tag<br></hr>");
+document.write("value stored in variable headVar is "+headVar);
+/* TODO:define variable headVar and initialize it to some integer value and display the value as shown in the Fig 6 */
+ </script> 
+ 
+<hr>
+ </head>
+ <body> 
+ 
+<script>
+var bodyVar=100;
+document.write("<hr>Script embedded in Body Tag<br></hr>");
+document.write("value stored in variable bodyVar is "+bodyVar);
+/* TODO:define variable bodyVar and initialize it to some integer value and display the value as shown in the Fig 6 */ </script> 
+ 
+<hr>
+ <script src="js_5.js"> </script> 
+ 
+<script> 
+addNos(headVar,bodyVar);
+</script> 
+<hr>
+</body>
+ </html> 

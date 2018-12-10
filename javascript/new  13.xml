@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<breakfast_menu>
+	<food>
+		<name>Belgian Waffles</name>
+		<price>$5.95</price>
+		<description>two of our famous</description>
+		<calories>650</calories>
+	</food>
+	<food>
+		<name>Strawberry Belgian Waffles</name>
+		<price>$7.95</price>
+		<description>two of strawberry belgian famous</description>
+		<calories>900</calories>
+	</food>
+	<food>
+		<name>Berry-Berry Belgian Waffles</name>
+		<price>$8.95</price>
+		<description>light belgian waffles covered in cheese</description>
+		<calories>850</calories>
+	</food>
+</breakfast_menu>

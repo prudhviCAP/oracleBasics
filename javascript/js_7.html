@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<h1>calculating compound interest</h1>
+		<script>
+		function calculate()
+		{
+		p=document.getElementById("p").value;
+		n=document.getElementById("n").value;
+		r=document.getElementById("r").value;
+		a=document.getElementById("a");
+		a.innerHTML=("amount total is "+p*Math.pow(1+r/100,n));
+		}
+		</script>
+	</head>
+	<body>
+		Amount: <input id="p"><br/>
+        Rate: <input id="r"><br/>
+        No. of Years: <input id="n"><br/>
+		<button onclick="calculate()">Calculate</button>
+		<p id="a"></p>
+	</body>
+</html>
