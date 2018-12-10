@@ -1,0 +1,155 @@
+SQL> set line 300;
+SQL> SELECT s.staff_name,s.staff_sal,d.dept_name,d.dept_code FROM staff_master s,department_master d WHERE s.dept_code=d.dept_code and staff_sal>20000;
+
+STAFF_NAME                                          STAFF_SAL DEPT_NAME                                   DEPT_CODE
+-------------------------------------------------- ---------- -------------------------------------------------- ----------
+Mohan                                                   24000 Computer Science                                   10
+Rahul                                                   22000 Electricals                                        20
+Smith                                                   62000 Electricals                                        20
+Ram                                                     32000 Electronics                                        30
+Allen                                                   42000 Electronics                                        30
+
+SQL> SELECT s.staff_name AS Staff,s.staff_code AS Staf#,d.dept_code AS Department,s.mgr_code AS Mgr#,b.staff_name AS Manager 
+FROM staff_master s,staff_master b,department_master d WHERE b.staff_code=s.mgr_code AND s.dept_code=d.dept_code;
+
+STAFF                                                   STAF# DEPARTMENT       MGR# MANAGER
+-------------------------------------------------- ---------- ---------- ---------- --------------------------------------------------
+Smith                                                  100007         20     100005 John
+Allen                                                  100006         30     100005 John
+Rahul                                                  100009         20     100006 Allen
+Raviraj                                                100008         40     100006 Allen
+Anil                                                   100004         20     100006 Allen
+Mohan                                                  100003         10     100006 Allen
+Arvind                                                 100001         30     100006 Allen
+Ram                                                    100010         30     100007 Smith
+Shyam                                                  100002         20     100007 Smith
+
+9 rows selected.
+
+SQL> SELECT s.student_code,s.student_name,b.book_code,bd.book_name FROM student_master s,book_transactions b,book_master bd WHERE b.book_expected_return_date=sysdate AND
+b.book_code=bd.book_code AND s.student_code=b.student_code;
+
+no rows selected
+
+SQL> SELECT s.staff_code,s.staff_name,d.dept_name,dg.design_name,b.book_code,b.book_name
+  2  from
+  3  staff_master s,department_master d,designation_master dg,book_master b
+  4  where book_code in(
+  5  select book_code from book_transactions where book_issue_date= to_char(sysdate-30,'DD-MONTH-YYYY'));
+
+no rows selected
+
+SQL> select s.staff_code,s.staff_name,d.design_name,e.dept_name,b.book_name,b.book_pub_author,5* TO_CHAR(sysdate-t.book_expected_return_date)as 
+FINE FROM staff_master s,designation_master d,department_master e,book_master b,book_transactions t where s.design_code=d.design_code and s.dept_code=e.dept_code
+and s.staff_code=t.staff_code and b.book_code=t.book_code;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_NAME                                DEPT_NAME                                          BOOK_NAME
+                       BOOK_PUB_AUTHOR                                          FINE
+---------- -------------------------------------------------- -------------------------------------------------- -------------------------------------------------- -------------------------------------------------- -------------------------------------------------- ----------
+    100007 Smith                                              Reader                                     Electricals                                        Relational DBMS
+                       B.C. Desai                                         14027.3738
+    100007 Smith                                              Reader                                     Electricals                                        Intoduction To Algorithams                          Cormen                                             13942.3738
+    100006 Allen                                              Reader                                     Electronics                                        Intoduction To Algorithams                          Cormen                                             15767.3738
+    100006 Allen                                              Reader                                     Electronics                                        Computer Networks
+                       Tanenbaum                                          14047.3738
+    100010 Ram                                                Reader                                     Electronics                                        Introduction to O/S
+                       Millan                                             13937.3738
+
+
+SQL> select staff_code,staff_name,staff_sal from staff_master where staff_sal<(select avg(staff_sal)from staff_master);
+
+STAFF_CODE STAFF_NAME                                          STAFF_SAL
+---------- -------------------------------------------------- ----------
+    100001 Arvind                                                  17000
+    100002 Shyam                                                   20000
+    100003 Mohan                                                   24000
+    100004 Anil                                                    20000
+    100008 Raviraj                                                 18000
+    100009 Rahul                                                   22000
+
+6 rows selected.
+
+
+
+SQL> select book_pub_author as Author ,book_name from book_master where book_pub_author in(select book_pub_author from book_master having count(book_pub_author)>1 group 
+by book_pub_author);
+
+AUTHOR                                             BOOK_NAME
+-------------------------------------------------- --------------------------------------------------
+Yashavant Kanetkar                                 Let Us C
+Yashavant Kanetkar                                 Let Us C++
+
+SQL> select s.staff_code,s.staff_name,d.dept_name from staff_master s join department_master d on s.dept_code=d.dept_code
+  2  where
+  3  staff_code in
+  4  (select staff_code from book_transactions group by staff_code having count(book_code)>1);
+
+STAFF_CODE STAFF_NAME
+---------- --------------------------------------------------
+DEPT_NAME
+--------------------------------------------------
+    100006 Allen
+Electronics
+
+    100007 Smith
+Electricals
+
+SQL> select s.student_name,s.student_code,d.dept_name from student_master s, department_master d where s.dept_code=d.dept_code and s.dept_code IN(select dept_code from student_master group by dept_code having count(*)=(select max(count(*))from student_master group by dept_code));
+
+STUDENT_NAME                                       STUDENT_CODE
+-------------------------------------------------- ------------
+DEPT_NAME
+--------------------------------------------------
+Amit                                                       1001
+Computer Science
+
+Ravi                                                       1002
+Computer Science
+
+Dev                                                        1008
+Computer Science
+
+
+STUDENT_NAME                                       STUDENT_CODE
+-------------------------------------------------- ------------
+DEPT_NAME
+--------------------------------------------------
+Sunil                                                      1014
+Computer Science
+
+Amrit                                                      1020
+
+SQL> select s.staff_code,s.staff_name,d.dept_name,e.design_name from staff_master s,department_master d,designation_master e where s.dept_code=d.dept_code and staff_name in(select staff_name from staff_master where hiredate between sysdate and to_char(sysdate-90));
+
+no rows selected
+
+SQL> select mgr.staff_name as MANAGER_NAME,count(*) as TOTAL_STRENGTH  from staff_master staff,staff_master mgr where staff.mgr_code=mgr.staff_code group by mgr.staff_name;
+
+MANAGER_NAME                                       TOTAL_STRENGTH
+-------------------------------------------------- --------------
+John                                                            2
+Allen                                                           5
+Smith                                                           3
+
+
+
+SQL> select B.* ,next_day(last_day(book_expected_return_date)-7,'MONDAY') from book_transactions B where book_actual_return_date is null and book_expected_return_date=next_day(last_day(book_expected_return_date)-7,'MONDAY');
+
+no rows selected
+
+
+
+SQL> select s.dept_code,d.dept_name,count(*) as NUMBER_OF_PEOPLE from staff_master s, department_master d where s.dept_code=d.dept_code group by s.dept_code,d.dept_name;
+
+ DEPT_CODE DEPT_NAME                                          NUMBER_OF_PEOPLE
+---------- -------------------------------------------------- ----------------
+        10 Computer Science                                                  1
+        20 Electricals                                                       4
+        30 Electronics                                                       3
+        40 Mechanics                                                         1
+Computer Science
+SQL>spool off
+
+
+
+
