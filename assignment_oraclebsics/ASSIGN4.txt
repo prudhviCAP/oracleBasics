@@ -1,0 +1,606 @@
+Q.4
+
+SQL> set linesize 300
+SQL> CREATE table customer
+  2  ( customerid number(5),
+  3  cust_name varchar2(20),
+  4  address1 varchar2(30),
+  5  address2 varchar2(30));
+CREATE table customer
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  CREATE table customer1
+  2  ( customerid number(5),
+  3  cust_name varchar2(20),
+  4  address1 varchar2(30),
+  5* address2 varchar2(30))
+  6  /
+
+Table created.
+
+SQL> Alter table customer1 MODIFY(cust_name varchar2(30) NOT NULL);
+
+Table altered.
+
+SQL> alter table customer1 rename column cust_name to customername;
+
+Table altered.
+
+
+SQL> select * from customer1;
+
+no rows selected
+
+
+SQL> ALTER table customer1 ADD(gender varchar2(1), age number(3), phoneno number(10));
+
+Table altered.
+
+SQL> ALTER table customer1 RENAME to cust_table;
+
+Table altered.
+
+SQL> INSERT INTO customer values(1000,'allen','#115 chicago','#115 chicago','M',25,7878776);
+INSERT INTO customer values(1000,'allen','#115 chicago','#115 chicago','M',25,7878776)
+            *
+ERROR at line 1:
+ORA-00913: too many values 
+
+
+SQL> INSERT INTO cust_table values(1000,'allen','#115 chicago','#115 chicago','M',25,7878776);
+
+1 row created.
+
+SQL> INSERT INTO cust_table values(1001,'george','#116 france','#116 france','M',25,434524);
+
+1 row created.
+
+SQL> INSERT INTO cust_table values(1002,'becker','#114 newyork','#114 newyork','M',45,431525);
+
+1 row created.
+
+SQL> ALTER table cust_table ADD( CONSTRAINT custid_prim PRIMARY KEY(customerid));
+
+Table altered.
+
+SQL> INSERT INTO cust_table values(1002,'john','#114 chicago','#114 chicago','M',45,439525);
+INSERT INTO cust_table values(1002,'john','#114 chicago','#114 chicago','M',45,439525)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.CUSTID_PRIM) violated
+
+SQL> ALTER table cust_table DISABLE CONSTRAINT custid_prim;
+
+Table altered.
+
+SQL> INSERT INTO cust_table values(1002,'becker','#114 new york','#114 new york','M',45,431525);
+
+1 row created.
+
+SQL> INSERT INTO cust_table values(1003,'nanapatekar','#115 india','#115 india','M',45,431525);
+
+1 row created.
+
+SQL> ALTER table cust_table ENABLE CONSTRAINT custid_prim;
+ALTER table cust_table ENABLE CONSTRAINT custid_prim
+*
+ERROR at line 1:
+ORA-02437: cannot validate (SYSTEM.CUSTID_PRIM) - primary key violated 
+
+
+SQL> spool off
+SQL> ALTER cust_table DROP CONSTRAINT custid_prim;
+ALTER cust_table DROP CONSTRAINT custid_prim
+      *
+ERROR at line 1:
+ORA-00940: invalid ALTER command 
+
+
+SQL> ALTER table cust_table DROP CONSTRAINT custid_prim;
+
+Table altered.
+
+SQL> INSERT INTO cust_table values(1002,'becker','#114 new york','#114 new york','M',45,431525,15000.50);
+INSERT INTO cust_table values(1002,'becker','#114 new york','#114 new york','M',45,431525,15000.50)
+            *
+ERROR at line 1:
+ORA-00913: too many values 
+
+
+SQL> INSERT INTO cust_table values(1003,'nanapatekar','#115 india','#115 india','M',45,431525,20000.50);
+INSERT INTO cust_table values(1003,'nanapatekar','#115 india','#115 india','M',45,431525,20000.50)
+            *
+ERROR at line 1:
+ORA-00913: too many values 
+
+
+SQL> TRUNCATE table cust_table;
+
+Table truncated.
+
+SQL> ALTER table cust_table ADD(e_mail varchar2(40));
+
+Table altered.
+
+SQL> ALTER table cust_table DROP e_mail;
+ALTER table cust_table DROP e_mail
+                            *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> ALTER table cust_table DROP column e_mail;
+
+Table altered.
+
+SQL> CREATE table suppliers AS SELECT customerid AS suppid FROM cust_table;
+
+Table created.
+
+SQL> DROP table suppliers
+  2  /
+
+Table dropped.
+
+SQL> CREATE table suppliers AS SELECT customerid AS suppid,customername AS sname,address1 AS addr1,address2 AS addr2,phoneno AS contactno FROM cust_table;
+
+Table created.
+
+SQL> DROP table suppliers;
+
+Table dropped.
+
+SQL> CREATE table customermaster
+  2  (customerid number(5) CONSTRAINT custid_pk PRIMARY KEY,
+  3  customername varchar2(30) NOT NULL,
+  4  address1 varchar2(30) NOT NULL,
+  5  address2 varchar2(30));
+
+Table created.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  CREATE table customermaster
+  2  (customerid number(5) CONSTRAINT custid_pk PRIMARY KEY,
+  3  customername varchar2(30) NOT NULL,
+  4  address1 varchar2(30) NOT NULL,
+  5  address2 varchar2(30),
+  6  gender varchar2(1),
+  7  age number(3),
+  8* phoneno number(10));
+  9  /
+phoneno number(10));
+                   *
+ERROR at line 8:
+ORA-00911: invalid character 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  CREATE table customermaster
+  2  (customerid number(5) CONSTRAINT custid_pk PRIMARY KEY,
+  3  customername varchar2(30) NOT NULL,
+  4  address1 varchar2(30) NOT NULL,
+  5  address2 varchar2(30),
+  6  gender varchar2(1),
+  7  age number(3),
+  8* phoneno number(10))
+  9  /
+CREATE table customermaster
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> DROP table customermaster;
+
+Table dropped.
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1   CREATE table customermaster
+  2     (customerid number(5) CONSTRAINT custid_pk PRIMARY KEY,
+  3     customername varchar2(30) NOT NULL,
+  4     address1 varchar2(30) NOT NULL,
+  5     address2 varchar2(30),
+  6      gender varchar2(1),
+  7      age number(3),
+  8*    phoneno number(10))
+SQL> /
+
+Table created.
+
+SQL> spool off
+SQL> CREATE table accountsmaster
+  2  (customer id number(5),
+  3  accountnumber number(10,2) CONSTRAINT acc_pk PRIMARY KEY,
+  4  accounttype char(3),
+  5  ledgerbalance number(10,2) NOT NULL);
+(customer id number(5),
+             *
+ERROR at line 2:
+ORA-00907: missing right parenthesis 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  CREATE table accountsmaster
+  2  (customerid number(5),
+  3  accountnumber number(10,2) CONSTRAINT acc_pk PRIMARY KEY,
+  4  accounttype char(3),
+  5* ledgerbalance number(10,2) NOT NULL)
+  6  /
+
+Table created.
+
+SQL> CREATE SEQUENCE accountnumberseq
+  2  /
+
+Sequence created.
+
+SQL> ALTER table accountmaster ADD CONSTRAINT cust_acc FOREIGN KEY(customerid) REFERENCES customermaster(customerid);
+ALTER table accountmaster ADD CONSTRAINT cust_acc FOREIGN KEY(customerid) REFERENCES customermaster(customerid)
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> ALTER table accountsmaster ADD CONSTRAINT cust_acc FOREIGN KEY(customerid) REFERENCES customermaster(customerid);
+
+Table altered.
+
+SQL> Insert into customermaster values(1000, 'Allen', '#115 Chicago', '#115 Chicago', 'M', 25, 7878776);
+
+1 row created.
+
+SQL> Insert into customermaster values(1001, 'George', '#116 France', '#116 France', 'M', 25, 434524);
+
+1 row created.
+
+SQL> Insert into customermaster values(1002, 'Becker', '#114 New York', '#114 New York', 'M', 45, 431525);
+
+1 row created.
+
+SQL> ALTER table accountsmaster MODIFY(accounttype CONSTRAINT ac_ck CHECK(accounttype='NRI' OR accounttype='IND'));
+
+Table altered.
+
+SQL> ALTER table accountsmaster MODIFY(ledgerbalance CONSTRAINT balance_check CHECK(min(ledgerbalance)>50000));
+ALTER table accountsmaster MODIFY(ledgerbalance CONSTRAINT balance_check CHECK(min(ledgerbalance)>50000))
+                                                                               *
+ERROR at line 1:
+ORA-00934: group function is not allowed here 
+
+
+SQL> ALTER table accountsmaster MODIFY(ledgerbalance CONSTRAINT balance_check CHECK(ledgerbalance>50000));
+
+Table altered.
+
+SQL> ALTER table accountsmaster MODIFY(ledgerbalance CONSTRAINT balance_check CHECK(ledgerbalance>5000));
+ALTER table accountsmaster MODIFY(ledgerbalance CONSTRAINT balance_check CHECK(ledgerbalance>5000))
+                                                           *
+ERROR at line 1:
+ORA-02264: name already used by an existing constraint 
+
+
+SQL> DELETE FROM accountsmaster, customermaster WHERE customerid=1001;
+DELETE FROM accountsmaster, customermaster WHERE customerid=1001
+                          *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> CREATE table accountdetails AS SELECT * FROM accountsmaster;
+
+Table created.
+
+SQL> CREATE VIEW acc_view AS SELECT customerid AS customercode,customername AS accountholdername, accountnumber ,accounttype AS type, ledgerbalance AS balance FROM accountsmaster;
+CREATE VIEW acc_view AS SELECT customerid AS customercode,customername AS accountholdername, accountnumber ,accounttype AS type, ledgerbalance AS balance FROM accountsmaster
+                                                          *
+ERROR at line 1:
+ORA-00904: "CUSTOMERNAME": invalid identifier 
+
+
+SQL> CREATE VIEW acc_view AS SELECT customerid AS customercode,cust_name AS accountholdername, accountnumber ,accounttype AS type, ledgerbalance AS balance FROM accountsmaster;
+CREATE VIEW acc_view AS SELECT customerid AS customercode,cust_name AS accountholdername, accountnumber ,accounttype AS type, ledgerbalance AS balance FROM accountsmaster
+                                                          *
+ERROR at line 1:
+ORA-00904: "CUST_NAME": invalid identifier 
+
+
+SQL> CREATE VIEW acc_view AS SELECT customerid AS customercode, accountnumber ,accounttype AS type, ledgerbalance AS balance FROM accountsmaster;
+
+View created.
+
+SQL> CREATE VIEW vAccs_Dtls AS SELECT Accounttype,ledgerbalance from Accountmaster where accounttype = 'IND' and ledgerbalance > 10000;
+CREATE VIEW vAccs_Dtls AS SELECT Accounttype,ledgerbalance from Accountmaster where accounttype = 'IND' and ledgerbalance > 10000
+                                                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> CREATE VIEW vAccs_Dtls AS SELECT Accounttype,ledgerbalance from Accountsmaster where accounttype = 'IND' and ledgerbalance > 10000;
+
+View created.
+
+SQL> CREATE VIEW accsvw10 AS SELECT * FROM emp with READ ONLY;
+
+View created.
+
+SQL> CREATE SEQUENCE seq_dept
+  2  START WITH 40
+  3  MIN VALUE 40
+  4  INCREMENT BY 10
+  5  MAX VALUE 200
+  6  NO CYCLE;
+MIN VALUE 40
+*
+ERROR at line 3:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  CREATE SEQUENCE seq_dept
+  2  MINIMUM VALUE 40
+  3  START WITH 40
+  4  INCREMENT BY 10
+  5  MAX VALUE 200
+  6* NO CYCLE
+  7  /
+MINIMUM VALUE 40
+*
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  CREATE SEQUENCE seq_dept
+  2  MINVALUE 40
+  3  START WITH 40
+  4  INCREMENT BY 10
+  5  MAXVALUE 200
+  6* NO CYCLE
+SQL> /
+NO CYCLE
+*
+ERROR at line 6:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  CREATE SEQUENCE seq_dept
+  2  MINVALUE 40
+  3  START WITH 40
+  4  INCREMENT BY 10
+  5  MAXVALUE 200
+  6* NOCYCLE
+  7  /
+
+Sequence created.
+
+SQL> INSERT INTO department_master VALUES(seq_dept.nextval,'asha');
+INSERT INTO department_master VALUES(seq_dept.nextval,'asha')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.SYS_C007002) violated 
+
+
+SQL> CREATE table department_masters
+  2  (dept_code number(10),
+  3  dept_name varchar2(30));
+
+Table created.
+
+SQL> INSERT INTO department_masters VALUES(seq_dept.nextval,'asha');
+
+1 row created.
+
+SQL> INSERT INTO department_masters VALUES(seq_dept.nextval,'alekhya');
+
+1 row created.
+
+SQL> INSERT INTO department_masters VALUES(seq_dept.nextval,'avinash');
+
+1 row created.
+
+SQL> DROP SEQUENCE seq_dept;
+
+Sequence dropped.
+
+SQL> CREATE INDEX no_name ON emp(empno);
+
+Index created.
+
+SQL> CREATE SYNONYM synemp as emp;
+CREATE SYNONYM synemp as emp
+                      *
+ERROR at line 1:
+ORA-00905: missing keyword 
+
+
+SQL> CREATE SYNONYM synemp FOR emp;
+
+Synonym created.
+
+SQL> SELECT * FROM synemp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7369 SMITH      CLERK           7902 17-DEC-80        800
+        20
+
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300
+        30
+
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7566 JONES      MANAGER         7839 02-APR-81       2975
+        20
+
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400
+        30
+
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450
+        10
+
+      7788 SCOTT      ANALYST         7566 09-DEC-82       3000
+        20
+
+      7839 KING       PRESIDENT            17-NOV-81       5000
+        10
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0
+        30
+
+      7876 ADAMS      CLERK           7788 12-JAN-83       1100
+        20
+
+      7900 JAMES      CLERK           7698 03-DEC-81        950
+        30
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      7902 FORD       ANALYST         7566 03-DEC-81       3000
+        20
+
+      7934 MILLER     CLERK           7782 23-JAN-82       1300
+        10
+
+      1003 asha       capgemini       7902 14-NOV-18      20000       5000
+        20
+
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM
+---------- ---------- --------- ---------- --------- ---------- ----------
+    DEPTNO
+----------
+      1004 asha       capgemini       7902 14-NOV-18      20000       5000
+        20
+
+      1005 asha       capgemini       7902 14-NOV-18      20000       5000
+        20
+
+
+17 rows selected.
+
+SQL> CREATE SEQUENCE seq_emp
+  2  START WITH 1001
+  3  MINVALUE 1001
+  4  INCREMENT BY 1
+  5  NOCYCLE;
+
+Sequence created.
+ 
+
+
+SQL> select * from emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                                                                                                                       
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                                                                                                                       
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                                                                                                                                                                                                       
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                                                                                                                                                                                                       
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                                                                                                                                                                                                       
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20                                                                                                                                                                                                                       
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                                                                                                                                                                                                       
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30                                                                                                                                                                                                                       
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10                                                                                                                                                                                                                       
+      7788 SCOTT      ANALYST         7566 09-DEC-82       3000                    20                                                                                                                                                                                                                       
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                                                                                                                                                                                                       
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                                                                                                                                                                                                       
+      7876 ADAMS      CLERK           7788 12-JAN-83       1100                    20                                                                                                                                                                                                                       
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                                                                                                                       
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                                                                                                                       
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                                                                                                                                                                                                       
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                                                                                                                                                                                                       
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                                                                                                                                                                                                       
+
+14 rows selected.
+
+SQL> INSERT INTO emp VALUES(seq_emp.nextval,'asha','capgemini','7902','14-NOV-2018',20000,5000,'2432');
+INSERT INTO emp VALUES(seq_emp.nextval,'asha','capgemini','7902','14-NOV-2018',20000,5000,'2432')
+                                                                                          *
+ERROR at line 1:
+ORA-01438: value larger than specified precision allowed for this column 
+
+
+SQL> INSERT INTO emp VALUES(seq_emp.nextval,'asha','capgemini','7902','14-NOV-2018',20000,5000,'20');
+
+1 row created.
+
+SQL> INSERT INTO emp VALUES(seq_emp.nextval,'asha','capgemini','7902','14-NOV-2018',20000,5000,'20');
+
+1 row created.
+
+SQL> INSERT INTO emp VALUES(seq_emp.nextval,'asha','capgemini','7902','14-NOV-2018',20000,5000,'20');
+
+1 row created.
+
+SQL> SELECT * FROM emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                                                                                                                       
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                                                                                                                       
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20                                                                                                                                                                                                                       
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30                                                                                                                                                                                                                       
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30                                                                                                                                                                                                                       
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20                                                                                                                                                                                                                       
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30                                                                                                                                                                                                                       
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30                                                                                                                                                                                                                       
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10                                                                                                                                                                                                                       
+      7788 SCOTT      ANALYST         7566 09-DEC-82       3000                    20                                                                                                                                                                                                                       
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10                                                                                                                                                                                                                       
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30                                                                                                                                                                                                                       
+      7876 ADAMS      CLERK           7788 12-JAN-83       1100                    20                                                                                                                                                                                                                       
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO                                                                                                                                                                                                                       
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------                                                                                                                                                                                                                       
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30                                                                                                                                                                                                                       
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20                                                                                                                                                                                                                       
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10                                                                                                                                                                                                                       
+      1003 asha       capgemini       7902 14-NOV-18      20000       5000         20                                                                                                                                                                                                                       
+      1004 asha       capgemini       7902 14-NOV-18      20000       5000         20                                                                                                                                                                                                                       
+      1005 asha       capgemini       7902 14-NOV-18      20000       5000         20                                                                                                                                                                                                                       
+
+17 rows selected.
+
+SQL> spool off

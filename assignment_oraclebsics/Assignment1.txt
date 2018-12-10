@@ -1,0 +1,35 @@
+ SQL> SELECT STAFF_NAME AS NAME,DESIGN_CODE AS DESIGNATION_CODE
+  2  FROM STAFF_MASTER
+  3  WHERE HIREDATE <='01-JAN-03' AND STAFF_SAL BETWEEN 12000 AND 25000;
+
+NAME                                               DESIGNATION_CODE             
+-------------------------------------------------- ----------------             
+Shyam                                                           102             
+Mohan                                                           102             
+Anil                                                            102             
+
+SQL> SELECT STAFF_CODE,STAFF_NAME AS NAME,DEPT_CODE
+  2  FROM STAFF_MASTER
+  3  WHERE ((SYSDATE-HIREDATE)/365)>=18 ORDER BY HIREDATE;
+
+no rows selected
+
+SQL> SELECT STAFF_NAME,DEPT_CODE,MGR_CODE
+  2  FROM STAFF_MASTER
+  3  WHERE MGR_CODE IS NULL;
+
+no rows selected
+
+SQL> SELECT BOOK_PUB_YEAR,BOOK_NAME
+  2  FROM BOOK_MASTER
+  3  WHERE BOOK_PUB_YEAR BETWEEN 2001 AND 2004 AND BOOK_NAME LIKE '%&%';
+
+no rows selected
+
+SQL> SELECT STAFF_NAME
+  2  FROM STAFF_MASTER
+  3  WHERE STAFF_NAME LIKE '%\_%';
+
+no rows selected
+
+SQL> SPOOL OFF;

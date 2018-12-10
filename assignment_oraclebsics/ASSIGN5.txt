@@ -1,0 +1,203 @@
+Q.5
+
+SQL> CREATE table employee AS SELECT * FROM emp WHERE 1=3;
+
+Table created.
+
+SQL> DESC employee;
+ Name
+                                               Null?    Type
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------- --------------------------------------------------------------------------------------------------------------------
+ EMPNO
+                                               NOT NULL NUMBER(4)
+ ENAME
+                                                        VARCHAR2(10)
+ JOB
+                                                        VARCHAR2(9)
+ MGR
+                                                        NUMBER(4)
+ HIREDATE
+                                                        DATE
+ SAL
+                                                        NUMBER(7,2)
+ COMM
+                                                        NUMBER(7,2)
+ DEPTNO
+                                                        NUMBER(2)
+
+SQL> SELECT * FROM employee;
+
+no rows selected
+
+SQL> SELECT * FROM emp;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7788 SCOTT      ANALYST         7566 09-DEC-82       3000                    20
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7876 ADAMS      CLERK           7788 12-JAN-83       1100                    20
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+      1003 asha       capgemini       7902 14-NOV-18      20000       5000         20
+      1004 asha       capgemini       7902 14-NOV-18      20000       5000         20
+      1005 asha       capgemini       7902 14-NOV-18      20000       5000         20
+
+17 rows selected.
+
+SQL> INSERT INTO employee SELECT * FROM emp;
+
+17 rows created.
+
+SQL> SELECT * FROM employee;
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7369 SMITH      CLERK           7902 17-DEC-80        800                    20
+      7499 ALLEN      SALESMAN        7698 20-FEB-81       1600        300         30
+      7521 WARD       SALESMAN        7698 22-FEB-81       1250        500         30
+      7566 JONES      MANAGER         7839 02-APR-81       2975                    20
+      7654 MARTIN     SALESMAN        7698 28-SEP-81       1250       1400         30
+      7698 BLAKE      MANAGER         7839 01-MAY-81       2850                    30
+      7782 CLARK      MANAGER         7839 09-JUN-81       2450                    10
+      7788 SCOTT      ANALYST         7566 09-DEC-82       3000                    20
+      7839 KING       PRESIDENT            17-NOV-81       5000                    10
+      7844 TURNER     SALESMAN        7698 08-SEP-81       1500          0         30
+      7876 ADAMS      CLERK           7788 12-JAN-83       1100                    20
+
+     EMPNO ENAME      JOB              MGR HIREDATE         SAL       COMM     DEPTNO
+---------- ---------- --------- ---------- --------- ---------- ---------- ----------
+      7900 JAMES      CLERK           7698 03-DEC-81        950                    30
+      7902 FORD       ANALYST         7566 03-DEC-81       3000                    20
+      7934 MILLER     CLERK           7782 23-JAN-82       1300                    10
+      1003 asha       capgemini       7902 14-NOV-18      20000       5000         20
+      1004 asha       capgemini       7902 14-NOV-18      20000       5000         20
+      1005 asha       capgemini       7902 14-NOV-18      20000       5000         20
+
+17 rows selected.
+
+SQL> UPDATE employee SET job=(SELECT job FROM employee WHERE empno=7788),deptno=(SELECT deptno FROM employee WHERE empno=7788) WHERE empno=7698;
+
+1 row updated.
+
+
+SQL> DELETE FROM department_master WHERE dept_name='SALES';
+
+0 rows deleted.
+
+SQL> SELECT * FROM department_master;
+
+ DEPT_CODE DEPT_NAME
+---------- --------------------------------------------------
+        10 Computer Science
+        20 Electricals
+        30 Electronics
+        40 Mechanics
+        50 Robotics
+
+SQL> UPDATE employee SET deptno=(SELECT deptno FROM employee WHERE empno=7698) WHERE empno=7788;
+
+1 row updated.
+
+SQL> INSERT INTO employee VALUES('&empno','&ename','&job','&mgr','&hiredate','&sal','&comm','&deptno');
+Enter value for empno: 1000
+Enter value for ename: allen
+Enter value for job: clerk
+Enter value for mgr: 1001
+Enter value for hiredate: 12-jan-01
+Enter value for sal: 3000
+Enter value for comm: 2
+Enter value for deptno: 10
+old   1: INSERT INTO employee VALUES('&empno','&ename','&job','&mgr','&hiredate','&sal','&comm','&deptno')
+new   1: INSERT INTO employee VALUES('1000','allen','clerk','1001','12-jan-01','3000','2','10')
+
+1 row created.
+
+SQL> /
+Enter value for empno: 1001
+Enter value for ename: george
+Enter value for job: analyst
+Enter value for mgr: null
+Enter value for hiredate: 08-sep-92
+Enter value for sal: 5000
+Enter value for comm: 0
+Enter value for deptno: 10
+old   1: INSERT INTO employee VALUES('&empno','&ename','&job','&mgr','&hiredate','&sal','&comm','&deptno')
+new   1: INSERT INTO employee VALUES('1001','george','analyst','null','08-sep-92','5000','0','10')
+INSERT INTO employee VALUES('1001','george','analyst','null','08-sep-92','5000','0','10')
+                                                      *
+ERROR at line 1:
+ORA-01722: invalid number
+
+
+SQL> /
+Enter value for empno: 1001
+Enter value for ename: george
+Enter value for job: analyst
+Enter value for mgr: NULL
+Enter value for hiredate: 08-sep-92
+Enter value for sal: 5000
+Enter value for comm: 0
+Enter value for deptno: 10
+old   1: INSERT INTO employee VALUES('&empno','&ename','&job','&mgr','&hiredate','&sal','&comm','&deptno')
+new   1: INSERT INTO employee VALUES('1001','george','analyst','NULL','08-sep-92','5000','0','10')
+INSERT INTO employee VALUES('1001','george','analyst','NULL','08-sep-92','5000','0','10')
+                                                      *
+ERROR at line 1:
+ORA-01722: invalid number
+
+
+SQL> /
+Enter value for empno: 1001
+Enter value for ename: george
+Enter value for job: analyst
+Enter value for mgr:
+Enter value for hiredate: 08-sep-92
+Enter value for sal: 5000
+Enter value for comm: 0
+Enter value for deptno: 10
+old   1: INSERT INTO employee VALUES('&empno','&ename','&job','&mgr','&hiredate','&sal','&comm','&deptno')
+new   1: INSERT INTO employee VALUES('1001','george','analyst','','08-sep-92','5000','0','10')
+
+1 row created.
+
+SQL> /
+Enter value for empno: 1002
+Enter value for ename: becker
+Enter value for job: manager
+Enter value for mgr: 1000
+Enter value for hiredate: 04-nov-92
+Enter value for sal: 2800
+Enter value for comm: 4
+Enter value for deptno: 20
+old   1: INSERT INTO employee VALUES('&empno','&ename','&job','&mgr','&hiredate','&sal','&comm','&deptno')
+new   1: INSERT INTO employee VALUES('1002','becker','manager','1000','04-nov-92','2800','4','20')
+
+1 row created.
+
+SQL> /
+Enter value for empno: 1003
+Enter value for ename: bill
+Enter value for job: clerk
+Enter value for mgr: 1002
+Enter value for hiredate: 04-nov-92
+Enter value for sal: 3000
+Enter value for comm: 0
+Enter value for deptno: 20
+old   1: INSERT INTO employee VALUES('&empno','&ename','&job','&mgr','&hiredate','&sal','&comm','&deptno')
+new   1: INSERT INTO employee VALUES('1003','bill','clerk','1002','04-nov-92','3000','0','20')
+
+1 row created.
+
+SQL> spool off
