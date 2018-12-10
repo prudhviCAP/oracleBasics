@@ -1,0 +1,35 @@
+SQL> ED
+Wrote file afiedt.buf
+
+  1  create or replace function sf_age(
+  2          p_date emp.hiredate%type)return number as age number;
+  3       begin
+  4          FOR A IN(select (ROUND(months_between(sysdate,p_date)/12))AS B into age from emp)
+  5     	LOOP
+  6     		AGE:=A.B;
+  7     	END LOOP;
+  8          return age;
+  9*      end;
+SQL> /
+
+Function created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  declare
+  2     v_date date:=&v_date;
+  3     v_funcal number;
+  4     begin
+  5     v_funcal:=sf_age(v_date);
+  6     dbms_output.put_line(v_funcal);
+  7*   end;
+SQL> /
+Enter value for v_date: '04-MAR-1999'
+old   2:    v_date date:=&v_date;
+new   2:    v_date date:='04-MAR-1999';
+20                                                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> SPOOL OFF;

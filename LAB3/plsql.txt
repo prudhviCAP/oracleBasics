@@ -1,0 +1,134 @@
+1
+SQL> set serveroutput on
+SQL> DECLARE
+  2  V_Sample1 NUMBER(2):=24;
+  3  V_Sample2 CONSTANT NUMBER(2):=10;
+  4  V_Sample3 NUMBER(2) NOT NULL:=15;
+  5  V_Sample4 NUMBER(2) := 50;
+  6  V_Sample5 NUMBER(2) DEFAULT 25;
+  7  begin
+  8  dbms_output.put_line(V_Sample1);
+  9  end;
+ 10  /
+24
+
+PL/SQL procedure successfully completed.
+
+2
+SQL> DECLARE
+  2  var_num1 NUMBER :=5;
+  3  BEGIN
+  4  DECLARE
+  5  var_num2 NUMBER :=10;
+  6  BEGIN
+  7  dbms_output.put_line(var_num1);
+  8  dbms_output.put_line(var_num2);
+  9  END;
+ 10  dbms_output.put_line(var_num1);
+ 11  END;
+ 12  /
+5
+10
+5
+
+3
+
+PL/SQL procedure successfully completed.
+
+SQL> DECLARE
+  2  EMPLOYEES EMP%ROWTYPE;
+  3  BEGIN
+  4  SELECT * INTO EMPLOYEES FROM EMP WHERE empno=7369;
+  5  dbms_output.put_line(EMPLOYEES.ename|| '|' ||EMPLOYEES.job|| '|'||EMPLOYEES.mgr|| '|'||EMPLOYEES.hiredate|| '|'||EMPLOYEES.sal|| '|'||EMPLOYEES.comm|| '|' ||EMPLOYEES.deptno);
+  6  end;
+  7  /
+SMITH|CLERK|7902|17-DEC-80|800||20
+
+PL/SQL procedure successfully completed.
+
+
+4
+SQL> DECLARE
+  2  no number(10);
+  3  name varchar(15);
+  4  job varchar(10);
+  5  manager varchar(10);
+  6  hdate varchar(20);
+  7  salary number(20);
+  8  commission number(10);
+  9  deptnum number(20);
+ 10  deptname varchar(15);
+ 11  begin
+ 12  name:='&name';
+ 13  dbms_output.put_line('employee name is:'||name);
+ 14  select empno,ename,job,mgr,hiredate,sal,comm,deptno,dept_name into no,name,job,manager,hdate,salary,commission,deptnum,deptname from emp e,department_master d where e.deptno=d.dept_code and ename=name;
+ 15  dbms_output.put_line(no|| '|' ||name|| '|'||job|| '|' ||manager|| '|' ||hdate|| '|' ||salary|| '|'||commission|| '|' ||deptnum|| '|' ||deptname);
+ 16  end;
+ 17  /
+Enter value for name: SMITH
+old  12: name:='&name';
+new  12: name:='SMITH';
+employee name is:SMITH
+7369|SMITH|CLERK|7902|17-DEC-80|800||20|Electricals
+
+PL/SQL procedure successfully completed.
+
+
+
+2.1
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  DECLARE
+  2          V_BONUS STAFF_MASTER.STAFF_SAL%TYPE;
+  3          V_SAL STAFF_MASTER.STAFF_SAL%TYPE;
+  4  BEGIN
+  5     FOR C IN (SELECT STAFF_SAL INTO V_SAL
+  6     FROM STAFF_MASTER
+  7     WHERE MGR_CODE=100006)
+  8      LOOP
+  9          V_SAL:=C.STAFF_SAL;
+ 10      END LOOP;
+ 11     V_BONUS:=2*V_SAL;
+ 12          DBMS_OUTPUT.PUT_LINE('STAFF SALARY IS ' || V_SAL);
+ 13     DBMS_OUTPUT.PUT_LINE('STAFF BONUS IS ' || V_BONUS);
+ 14  EXCEPTION
+ 15     WHEN NO_DATA_FOUND THEN
+ 16     DBMS_OUTPUT.PUT_LINE('GIVEN CODE IS NOT VALID.ENTER VALID CODE');
+ 17* END;
+SQL> /
+STAFF SALARY IS 22000
+STAFF BONUS IS 44000
+
+2.3
+ 
+  1   declare
+  2           v_comm emp.comm%TYPE;
+  3         v_empno emp.empno%type;
+  4      EXC EXCEPTION;
+  5        BEGIN
+  6      v_empno :='&v_empno';
+  7                      SELECT comm INTO v_comm FROM emp WHERE empno =v_empno;
+  8                      DBMS_OUTPUT.PUT_LINE(v_comm);
+  9      if v_comm is null then
+ 10     raise exc;
+ 11     else
+ 12                     DBMS_OUTPUT.PUT_LINE('commission exists');
+ 13     end if;
+ 14            EXCEPTION
+ 15             WHEN EXC THEN
+ 16                     DBMS_OUTPUT.PUT_LINE('No commission exits');
+ 17*      end;
+SQL> /
+Enter value for v_empno: 7654
+old   6:     v_empno :='&v_empno';
+new   6:     v_empno :='7654';
+1400
+commission exists
+
+PL/SQL procedure successfully completed.  
+ 
+
+
+ 

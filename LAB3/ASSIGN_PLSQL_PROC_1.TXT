@@ -1,0 +1,51 @@
+SQL> ED
+Wrote file afiedt.buf
+
+  1     CREATE OR REPLACE PROCEDURE STAFF_D
+  2         AS
+  3         STAFF_COD STAFF_MASTER.STAFF_CODE%TYPE;
+  4         STAFF_NAM STAFF_MASTER.STAFF_NAME%TYPE;
+  5         DEPT_COD STAFF_MASTER.DEPT_CODE%TYPE;
+  6         MGR_NAME STAFF_MASTER.STAFF_NAME%TYPE;
+  7         MGR_CO STAFF_MASTER.STAFF_CODE%TYPE;
+  8        BEGIN
+  9         FOR A_Q IN (SELECT A.STAFF_CODE,A.STAFF_NAME,A.DEPT_CODE,B.STAFF_NAME AS MGR_CO
+ 10                    FROM STAFF_MASTER A,STAFF_MASTER B
+ 11                    WHERE B.STAFF_CODE=A.MGR_CODE ORDER BY A.STAFF_CODE)
+ 12         LOOP
+ 13           STAFF_COD:=A_Q.STAFF_CODE;
+ 14            STAFF_NAM:=A_Q.STAFF_NAME;
+ 15            DEPT_COD:=A_Q.DEPT_CODE;
+ 16           MGR_NAME:=A_Q.MGR_CO;
+ 17            DBMS_OUTPUT.PUT_LINE('STAFF NAME IS '||STAFF_NAM||' AND MANAGER NAME IS  '||MGR_NAME||' DEPARTMENT CODE IS '||DEPT_COD||' STAFF CODE IS  '||STAFF_COD);
+ 18     	END LOOP;
+ 19*      END;
+SQL> /
+
+Procedure created.
+
+SQL> EXECUTE STAFF_D;
+STAFF NAME IS Arvind AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 30 STAFF CODE
+IS  100001                                                                      
+STAFF NAME IS Shyam AND MANAGER NAME IS  Smith DEPARTMENT CODE IS 20 STAFF CODE 
+IS  100002                                                                      
+STAFF NAME IS Mohan AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 10 STAFF CODE 
+IS  100003                                                                      
+STAFF NAME IS Anil AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 20 STAFF CODE  
+IS  100004                                                                      
+STAFF NAME IS John AND MANAGER NAME IS  Smith DEPARTMENT CODE IS 10 STAFF CODE  
+IS  100005                                                                      
+STAFF NAME IS Allen AND MANAGER NAME IS  John DEPARTMENT CODE IS 30 STAFF CODE  
+IS  100006                                                                      
+STAFF NAME IS Smith AND MANAGER NAME IS  John DEPARTMENT CODE IS 20 STAFF CODE  
+IS  100007                                                                      
+STAFF NAME IS Raviraj AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 40 STAFF    
+CODE IS  100008                                                                 
+STAFF NAME IS Rahul AND MANAGER NAME IS  Allen DEPARTMENT CODE IS 20 STAFF CODE 
+IS  100009                                                                      
+STAFF NAME IS Ram AND MANAGER NAME IS  Smith DEPARTMENT CODE IS 30 STAFF CODE IS
+100010                                                                          
+
+PL/SQL procedure successfully completed.
+
+SQL> SPOOL OFF;
