@@ -1,0 +1,23 @@
+
+SQL> insert into employees values(emp_Code_Seq.nextVal,'&employee_name','&employee_code','&date_of_joining','&salary','grade','&title');
+Enter value for employee_name: Prudhvi
+Enter value for employee_code: Prudhvi
+Enter value for date_of_joining:
+Enter value for salary:
+Enter value for title:
+old   1: insert into employees values(emp_Code_Seq.nextVal,'&employee_name','&employee_code','&date_of_joining','&salary','grade','&title')
+new   1: insert into employees values(emp_Code_Seq.nextVal,'Prudhvi','Prudhvi','','','grade','')
+insert into employees values(emp_Code_Seq.nextVal,'Prudhvi','Prudhvi','','','grade','')
+            *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> insert into employees values(emp_Code_Seq.nextVal,'&employee_name','&date_of_joining','&salary','grade','&title');
+Enter value for employee_name: prudhvi
+Enter value for date_of_joining: 10-NOV-2019
+Enter value for salary: 20000
+Enter value for title: president
+old   1: insert into employees values(emp_Code_Seq.nextVal,'&employee_name','&date_of_joining','&salary','grade','&title')
+new   1: insert into employees values(emp_Code_Seq.nextVal,'prudhvi','10-NOV-2019','20000','grade','president')
+insert into employees values(emp_Code_Seq.nextVal,'prudhvi','10-NOV-2019','20000','grade','president')
